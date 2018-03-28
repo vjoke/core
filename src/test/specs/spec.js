@@ -34,6 +34,7 @@ if (process.env.USE_ISTANBUL) {
 
 if (process.env.MINE_ON_DEMAND) {
     TestBlockchain.MINE_ON_DEMAND = true;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200000;
 
     if (process.env.UV_THREADPOOL_SIZE) {
         TestBlockchain._miningPool.poolSize = parseInt(process.env.UV_THREADPOOL_SIZE);
