@@ -32,7 +32,8 @@ class ConsensusDB extends JDB.JungleDB {
             maxDbSize: ConsensusDB.INITIAL_DB_SIZE,
             autoResize: true,
             minResize: ConsensusDB.MIN_RESIZE,
-            onUpgradeNeeded: ConsensusDB._onUpgradeNeeded.bind(null, light)
+            onUpgradeNeeded: ConsensusDB._onUpgradeNeeded.bind(null, light),
+            useWritemap: true,
         });
         return this._init();
     }
