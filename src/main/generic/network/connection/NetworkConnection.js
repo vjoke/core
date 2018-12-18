@@ -83,8 +83,15 @@ class NetworkConnection extends Observable {
             reason = this._lastError;
         }
 
+        // reason is said to be a string for ws, but for errors it's an ErrorEvent instead.
+        let _reason = reason;
+        if (typeof _reason !== 'string' ) {
+            // ErrorEvent's message property should contain the reason for the error.
+            _reason = typeof reason.message === 'string' ? reason.message : '';
+        }
+
         // Tell listeners that this connection has closed.
-        this.fire('close', type, reason, this);
+        this.fire('close', type, _reason, this);
     }
 
     /**
