@@ -131,11 +131,10 @@ class WebSocketConnector extends Observable {
      */
     _onConnection(ws, req) {
         let remoteAddress = req.connection.remoteAddress;
-        if (!remoteAddress) {
-            Log.e(WebSocketConnector, 'Expected req.connection.remoteAddress to be set and it is not: closing the connection');
-            ws.close();
-            return;
-        }
+
+        // Remote address has to be set by now or the socket must already be destroyed. If it's already destroyed, then it
+        // will be cleaned up as any other connection would, so just let's deal with it as usual.
+        Assert.that(remoteAddress || req.connection.destroyed, 'remoteAddress is not set for an alive connection');
 
         // If we're behind a reverse proxy, the peer's IP will be in the header set by the reverse proxy, not in the req.connection object
         if (this._networkConfig.reverseProxy.enabled) {

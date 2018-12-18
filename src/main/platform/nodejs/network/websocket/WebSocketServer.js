@@ -38,6 +38,15 @@ class WebSocketServer extends WebSocket.Server {
         /** @type {number} */
         this._pendingUpgrades = 0;
 
+        server.on('connection', (socket) => {
+            // Query remote address at least once for each newly established socket connection.
+            if (!socket.remoteAddress) {
+                // If it's not set by now, then there has to be an issue with the underlying socket.
+                Log.e(WebSocketServer, 'Closing socket - remote address is not set');
+                socket.destroy();
+            }
+        });
+
         if (!networkConfig.reverseProxy.enabled) {
             server.on('connection', this._onNetSocketConnection.bind(this));
             this.on('connection', this._onWebSocketConnection.bind(this));
